@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión elementos con jQuery</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        a {
+            display: inline-block;
+            margin-bottom: 20px;
+            text-decoration: none;
+            color: #007bff;
+            font-weight: bold;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        h2 {
+            color: #444;
+        }
+
+        label, button {
+            font-size: 1rem;
+        }
+
+        #colorPicker {
+            margin: 10px 0;
+            padding: 5px;
+        }
+
+        button {
+            margin: 5px;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: #fff;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #elementsContainer {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .element {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background-color: #ccc;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .element:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .element button {
+            background-color: #28a745;
+        }
+
+        .element button.delete {
+            background-color: #dc3545;
+        }
+
+        .element button:hover {
+            background-color: #218838;
+        }
+
+        .element button.delete:hover {
+            background-color: #c82333;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    <a href="./index.html">Volver al inicio</a>
+    <h2>Formulario</h2>
+    <label for="colorPicker">Selecciona un color:</label>
+    <input type="color" id="colorPicker" value="#cccccc">
+    <button id="changeBackground">Cambiar color de fondo</button>
+    <button id="addElement">Añadir más elementos</button>
+    <button id="resetElements">Resetear elementos</button>
+    
+
+    <h2>Elementos</h2>
+    <div id="elementsContainer">
+        <div class="element">
+            <img src="./imagenes/elefante.png" alt="elefante">
+            <button class="change">Cambiar</button>
+            <button class="delete">Borrar</button>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $('#changeBackground').on('click', function () {
+                let color = $('#colorPicker').val();
+                $('.element').css('background-color', color);
+            });
+
+            $('#addElement').on('click', function () {
+                let images = [
+                    './imagenes/lince.png',
+                    './imagenes/elefante.png',
+                    './imagenes/tucan.png'
+                ];
+                let randomImage = images[Math.floor(Math.random() * images.length)];
+                let newElement = `
+                    <div class="element" style="background-color: ${$('#colorPicker').val()}">
+                        <img src="${randomImage}" alt="random image">
+                        <button class="change">Cambiar</button>
+                        <button class="delete">Borrar</button>
+                    </div>`;
+                $('#elementsContainer').append(newElement);
+            });
+
+            $('#elementsContainer').on('click', '.change', function () {
+                let images = [
+                    './imagenes/lince.png',
+                    './imagenes/elefante.png',
+                    './imagenes/tucan.png'
+                ];
+                let randomImage = images[Math.floor(Math.random() * images.length)];
+                $(this).siblings('img').attr('src', randomImage);
+            });
+
+            $('#elementsContainer').on('click', '.delete', function () {
+                $(this).parent().remove();
+            });
+
+            $('#resetElements').on('click', function () {
+                let color = $('#colorPicker').val();
+                $('#elementsContainer').html(`
+                    <div class="element" style="background-color: ${color}">
+                        <img src="./imagenes/elefante.png" alt="elefante">
+                        <button class="change">Cambiar</button>
+                        <button class="delete">Borrar</button>
+                    </div>
+                `);
+            });
+        });
+    </script>
+
+</body>
+
+</html>
